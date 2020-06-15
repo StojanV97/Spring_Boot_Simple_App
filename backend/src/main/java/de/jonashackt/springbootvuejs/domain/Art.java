@@ -22,6 +22,18 @@ public class Art {
 
     public Art() {
     }
+    public Art(long id,String name,long painterId,String creationDate, String currentLocation,String technique,String description,String artPeriod,String iconPath) {
+        this.id = id;
+        this.painterId = painterId;
+        this.creationDate = creationDate;
+        this.currentLocation = currentLocation;
+        this.technique = technique;
+        this.description = description;
+        this.artPeriod = artPeriod;
+        this.iconPath = iconPath;
+        this.name = name;
+    }
+
     public Art(String name,long painterId,String creationDate, String currentLocation,String technique,String description,String artPeriod,String iconPath) {
 
         this.name = name;

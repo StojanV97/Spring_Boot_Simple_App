@@ -9,14 +9,20 @@
                     >
                         <v-text-field
                                 outlined
-                                v-model="this.art.name"
+                                v-model="art.name"
                                 :rules="nameRules"
                                 label="Art name"
                                 required
                         ></v-text-field>
+                        <v-text-field
+                                outlined
+                                v-model="art.currentLocation"
+                                label="Current Location"
+                                required
+                        ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6" md="6">
+                    <v-col cols="12" md="6">
                         <v-menu
 
                                 ref="menu"
@@ -30,14 +36,14 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field
                                         outlined
-                                        v-model="this.art.creationDate"
+                                        v-model="date"
                                         label="Date of creation"
                                         readonly
                                         v-bind="attrs"
                                         v-on="on"
                                 ></v-text-field>
                             </template>
-                            <v-date-picker v-model="this.art.creationDate" no-title scrollable>
+                            <v-date-picker v-model="date" no-title scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                                 <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -50,7 +56,7 @@
 
                                 class="select"
                                 required
-                                v-model="this.art.artPeriod"
+                                v-model="art.artPeriod"
                                 :items="artPeriods"
                                 label="Art period "
                                 outlined
@@ -65,7 +71,7 @@
                                 alt="Vuetify Logo"
                                 class="shrink mr-2"
                                 contain
-                                v-model="this.art.iconPath"
+                                v-model="art.iconPath"
                                 src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
                                 transition="scale-transition"
                                 width="100"
@@ -78,9 +84,9 @@
                     >
                         <v-select
                                 required
-                                v-model="this.art.technique"
+                                v-model="art.technique"
                                 :items="techniques"
-                                label="Art period "
+                                label="Techniques "
                                 outlined
                         ></v-select>
                     </v-col>
@@ -105,7 +111,7 @@
                     >
                         <v-textarea
                                 outlined
-                                v-model="this.art.description"
+                                v-model="art.description"
                                 label="Description"
                                 required
                         ></v-textarea>
@@ -115,7 +121,7 @@
                             cols="12"
                             md="4"
                     >
-                        <v-btn>
+                        <v-btn @click="onSubmit">
                             Submit (NEKI SNEEKBAR)
                         </v-btn>
 
@@ -129,6 +135,7 @@
 </template>
 
 <script>
+    import api from "./backend-api";
     export default {
         data: () => ({
             rules: [
@@ -138,10 +145,13 @@
             artist:{
                 firstname: '',
                 lastname: '',
-                iconPath:'https://cdn.discordapp.com/attachments/690534792537702400/721866661161992272/HCI_DTI_FINAL.png'
+                iconPath:'',
 
             },
+            name,
+
             art:{
+                id:'',
                 name:'',
                 creationDate:'',
                 technique:'',
@@ -164,7 +174,7 @@
 
             artPeriods:["Klasicizam", "Postimpresionizam", "Impresionizam", "Kubizam", "Romantizam", "Gotika", "Barok", "Moderna Umestnost", "Renesansa" , "Humanizam"],
             techniques:['pastel', 'kolaž', 'vitraž', 'tapiserija', 'grafit', 'ugljen', 'ulje', 'akril', 'akvarel', 'gvaš', 'tempera', 'mozaik' ,'enkaustika'],
-            date: new Date().toISOString().substr(0, 10),
+            date: "",
             date2: "",
             menu: false,
             menu2:false,
@@ -172,11 +182,27 @@
 
         }),
         mounted() {
+            api.getPainting(1).then(response =>{
+                this.date =response.data.creationDate;
+                this.art.id=response.data.id;
+                this.art.creationDate = response.data.creationDate;
+                this.art.iconPath = response.data.iconPath;
+                this.art.technique = response.data.technique;
+                this.art.description = response.data.description;
+                this.art.artPeriod = response.data.artPeriod;
+                this.art.currentLocation = response.data.currentLocation;
+                this.art.name = response.data.name;
+                this.art.id = response.data.id;
+
+
+            })
         },
         methods:{
 
             onSubmit(){
 
+                    this.art.creationDate = this.date;
+                    api.updatePainting(this.art.name,1,this.art.creationDate,this.art.currentLocation,this.art.technique,this.art.description,this.art.artPeriod,"iconpath",this.art.id);
             },
         }
 

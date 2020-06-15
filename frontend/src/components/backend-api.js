@@ -35,12 +35,13 @@ export default {
     updatePainter(firstName,lastName,dateOfBirth,dateOfDeath,nationality,artPeriod,iconPath){
         return AXIOS.post("/painter/update/"+ firstName + "/" +lastName + "/" + dateOfBirth +"/" + dateOfDeath+ "/"+ nationality +"/" + artPeriod+"/"+ iconPath);
     },
-    getPainter(painterID){
-        return AXIOS.get("/painter/" + painterID);
+
+    getAllPaintnings() {
+        return AXIOS.get("/get-all-paintnings");
+    },
+    getPainter(id) {
+        return AXIOS.get("/get-painter/" + id)
     }
-
-
-
 }
 
 

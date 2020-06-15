@@ -1,5 +1,7 @@
 package de.jonashackt.springbootvuejs.controller;
 
+import de.jonashackt.springbootvuejs.domain.Art;
+import de.jonashackt.springbootvuejs.domain.Painter;
 import de.jonashackt.springbootvuejs.domain.Painter;
 import de.jonashackt.springbootvuejs.domain.User;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
@@ -19,15 +21,14 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Random;
+
 @RestController()
 @RequestMapping("/api")
 public class BackendController {
-
-    @Autowired
-    private ArtRepository artRepository;
-
-    @Autowired
-    private PainterRepository painterRepository;
 
     private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
 
@@ -35,15 +36,31 @@ public class BackendController {
     public static final String SECURED_TEXT = "Hello from the secured resource!";
 
     @Autowired
-    private UserRepository userRepository;
-
+    private ArtRepository artRepository;
+    @Autowired
+    private PainterRepository painterRepository;
 
     @RequestMapping(path = "/hello")
     public String sayHello() {
         LOG.info("GET called on /hello resource");
         return HELLO_TEXT;
     }
+    @GetMapping(value = "/get-all-paintnings",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPaintings(){
+        Collection<Art> artCollection = (Collection<Art>) artRepository.findAll();
+        ArrayList<Art> a = new ArrayList<Art>(artCollection);
+        return new ResponseEntity<Collection<Art>>(a,HttpStatus.OK);
 
+    }
+    @GetMapping(value = "/get-painter/{painterId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPainter(@PathVariable long painterId){
+        Optional<Painter> p = painterRepository.findById(painterId);
+        if(p.isPresent()){
+            Painter painter = p.get();
+            return new ResponseEntity<Painter>(painter,HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("Not found!",HttpStatus.OK);
+    }
 
     @PostMapping (path = "/painter/add/{firstName}/{lastName}/{dateOfBirth}/{dateOfDeath}/{nationality}/{artPeriod}/{iconPath}")
     public String addPainter(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String dateOfBirth, @PathVariable String dateOfDeath, @PathVariable String nationality, @PathVariable String artPeriod, @PathVariable String iconPath )
@@ -82,18 +99,7 @@ public class BackendController {
 
         return "DELETED";
     }
-    @GetMapping(path="/painter/{id}")
-    public ResponseEntity<Painter> getPainter(@PathVariable long id)
-    {
-        Optional<Painter> p = painterRepository.findById(id);
-        Painter Painter= new Painter();
-        if(p.isPresent())
-        {
-            Painter = p.get();
-        }
 
-        return new ResponseEntity<Painter>(Painter, HttpStatus.OK);
-    }
 
 
 }

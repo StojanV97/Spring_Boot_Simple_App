@@ -61,6 +61,11 @@ public class BackendController {
         }
         return new ResponseEntity<String>("Not found!",HttpStatus.OK);
     }
+    @GetMapping(value = "/get-all-painters",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllPainter(){
+        Collection<Painter> p = (Collection<Painter>) painterRepository.findAll();
+        return new ResponseEntity< Collection<Painter>>(p,HttpStatus.OK);
+    }
 
     @PostMapping (path = "/painter/add/{firstName}/{lastName}/{dateOfBirth}/{dateOfDeath}/{nationality}/{artPeriod}/{iconPath}")
     public String addPainter(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String dateOfBirth, @PathVariable String dateOfDeath, @PathVariable String nationality, @PathVariable String artPeriod, @PathVariable String iconPath )

@@ -25,7 +25,7 @@ public class SpringBootVuejsApplication {
 		return args -> {
 			System.out.println("CommandLineRunner running in the UnsplashApplication class...");
 
-			Painter p = new Painter(1,"asda","adsd","dasd","adsdas","asda","asdas");
+			Painter p = new Painter(1, "ime","prezime","2002-12-12","2003-13-12","srbin","Kubizam","asdas");
 			Art a = new Art(1,"ada",1,"asda","asda","adda","asda","asdad","asda");
 			Art a1 = new Art(2,"ada",1,"asda","asda","adda","asda","asdad","asda");
 			Art a2 = new Art(3,"ada",1,"asda","asda","adda","asda","asdad","asda");

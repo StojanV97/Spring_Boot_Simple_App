@@ -8,7 +8,7 @@
                             md="6"
                     >
                         <v-text-field
-                                v-model="this.artist.firstname"
+                                v-model="firstName"
                                 :rules="nameRules"
                                 label="First name"
                                 required
@@ -20,7 +20,7 @@
                             md="6"
                     >
                         <v-text-field
-                                v-model="this.artist.lastname"
+                                v-model="lastName"
                                 :rules="nameRules"
                                 label="Last name"
                                 required
@@ -33,7 +33,7 @@
                     <v-col class="d-flex" cols="12" sm="6">
                         <v-select
                                 required
-                                v-model="this.artist.artPeriod"
+                                v-model="artperiod"
                                 :items="artPeriods"
                                 label="Art period "
                                 outlined
@@ -45,7 +45,7 @@
                             md="6"
                     >
                         <v-text-field
-                                v-model="this.artist.nationality"
+                                v-model="nationality"
                                 :rules="nationalityRules"
                                 label="Nationality"
                                 required
@@ -58,6 +58,7 @@
 
                         <v-file-input
                                 :rules="rules"
+                                v-model="path"
                                 accept="image/png, image/jpeg, image/bmp"
                                 placeholder="Pick an picture"
                                 prepend-icon="mdi-panorama"
@@ -96,10 +97,9 @@
                             md="4"
                     >
                         <v-menu
-                                ref="menu"
+                                ref="menu2"
                                 v-model="menu2"
                                 :close-on-content-click="false"
-                                :return-value.sync="date2"
                                 transition="scale-transition"
                                 offset-y
                                 min-width="290px"
@@ -116,7 +116,7 @@
                             <v-date-picker v-model="date2" no-title scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.menu.save(date2)">OK</v-btn>
+                                <v-btn text color="primary" @click="$refs.menu2.save(date)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
                     </v-col>
@@ -125,7 +125,7 @@
                             cols="12"
                             md="4"
                     >
-                        <v-btn>
+                        <v-btn @click="onSubmit">
                            Submit (NEKI SNEEKBAR)
                         </v-btn>
 
@@ -139,6 +139,7 @@
 </template>
 
 <script>
+    import api from "./backend-api";
     export default {
         data: () => ({
             rules: [
@@ -151,12 +152,12 @@
                 dateOfBirth:'',
                 nationality:'',
                 artPeriod:'',
-                avatarLink:'',
-                dateOfDeath:'',
-                iconPath:''
+                dateOfDeath:null,
+                iconPath:'',
+
 
             },
-
+            path:'',
             nameRules: [
                 v => !!v || 'Artist Name is required',
             ],
@@ -171,10 +172,14 @@
 
             artPeriods:["Klasicizam", "Postimpresionizam", "Impresionizam", "Kubizam", "Romantizam", "Gotika", "Barok", "Moderna Umestnost", "Renesansa" , "Humanizam"],
             date: new Date().toISOString().substr(0, 10),
-            date2: "",
+            date2: new Date().toISOString().substr(0, 10) ,
             menu: false,
             menu2:false,
             modal: false,
+            firstName:'',
+            lastName:'',
+            nationality:'',
+            artperiod:'',
 
         }),
         mounted() {
@@ -183,6 +188,21 @@
 
             onSubmit(){
 
+                this.artist.firstname = this.firstName;
+                this.artist.lastname = this.lastName;
+                this.artist.artPeriod=this.artperiod;
+                this.artist.nationality = this.nationality;
+
+                this.artist.iconPath = this.path.link;
+                console.log(this.path.link);
+
+                this.artist.dateOfBirth = this.date;
+
+                console.log(this.artist);
+                api.addPainter(this.artist.firstname,this.artist.lastname, this.artist.dateOfBirth,this.artist.dateOfDeath,this.artist.nationality, this.artist.artPeriod,'this.artist.iconPath').then(response=>{
+                    console.log(this.artist);
+                    console.log(response.data);
+                })
             },
         }
 

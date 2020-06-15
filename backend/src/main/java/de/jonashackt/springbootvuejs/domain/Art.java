@@ -6,20 +6,7 @@ import javax.persistence.*;
 @Table(name = "ARTS")
 public class Art {
 
-    @Override
-    public String toString() {
-        return "Art{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", painterId=" + painterId +
-                ", creationDate='" + creationDate + '\'' +
-                ", currentLocation='" + currentLocation + '\'' +
-                ", technique='" + technique + '\'' +
-                ", description='" + description + '\'' +
-                ", artPeriod='" + artPeriod + '\'' +
-                ", iconPath='" + iconPath + '\'' +
-                '}';
-    }
+
 
     @Id
     private long id;
@@ -116,5 +103,20 @@ public class Art {
 
     public void setIconPath(String iconPath) {
         this.iconPath = iconPath;
+    }
+
+    @Override
+    public String toString() {
+        return "Art{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", painterId=" + painterId +
+                ", creationDate='" + creationDate + '\'' +
+                ", currentLocation='" + currentLocation + '\'' +
+                ", technique='" + technique + '\'' +
+                ", description='" + description + '\'' +
+                ", artPeriod='" + artPeriod + '\'' +
+                ", iconPath='" + iconPath + '\'' +
+                '}';
     }
 }

@@ -16,6 +16,7 @@ public class Painter {
     private String dateOfDeath;
     private String nationality;
     private String artPeriod;
+    private String iconPath;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "PAINTER_ART", joinColumns = @JoinColumn(name = "painter_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "art_id", referencedColumnName = "id"))
     private Set<Art> arts = new HashSet<Art>();
@@ -34,6 +35,16 @@ public class Painter {
         this.nationality = nationality;
         this.artPeriod = artPeriod;
         this.id = id;
+    }
+
+    public Painter(String firstName, String lastName, String dateOfBirth, String dateOfDeath, String nationality, String artPeriod, String iconPath) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.dateOfDeath = dateOfDeath;
+        this.nationality = nationality;
+        this.artPeriod = artPeriod;
+        this.iconPath = iconPath;
     }
 
     public Set<Art> getArts() {

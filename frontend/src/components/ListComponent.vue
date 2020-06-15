@@ -55,7 +55,7 @@ export default {
       {
         active: true,
         title: "Jason",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
+        avatar: require("../assets/Salvador-Dali-828x1024.jpg")
       },
       {
         active: true,

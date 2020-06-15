@@ -55,5 +55,10 @@ public class BackendController {
         }
         return new ResponseEntity<String>("Not found!",HttpStatus.OK);
     }
+    @GetMapping(value = "/get-all-painters",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllPainter(){
+        Collection<Painter> p = (Collection<Painter>) painterRepository.findAll();
+        return new ResponseEntity< Collection<Painter>>(p,HttpStatus.OK);
+    }
 
 }

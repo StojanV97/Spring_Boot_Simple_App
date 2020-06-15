@@ -82,7 +82,7 @@ public class BackendController {
                 flag = true;
             }
         }
-        painterRepository.save(new Painter(id,firstName,lastName,dateOfBirth,dateOfDeath,nationality,artPeriod,"iconPath"));
+        painterRepository.save(new Painter(id,firstName,lastName,dateOfBirth,dateOfDeath,nationality,artPeriod,iconPath));
         return "ADDED";
     }
 
@@ -100,6 +100,36 @@ public class BackendController {
         return "DELETED";
     }
 
+    @PostMapping (path="/art/delete/{id}")
+    public String deleteArt(@PathVariable long id){
+
+        Optional<Art> art = artRepository.findById(id);
+        Art a= new Art();
+        if(art.isPresent())
+        {
+            a = art.get();
+        }
+        artRepository.delete(a);
+
+        return "DELETED";
+    }
+
+    @PostMapping (path = "/art/add/{name}/{painterID}/{creationDate}/{currentLocation}/{technique}/{description}/{artPeriod}/{iconPath}")
+    public String addPainting(@PathVariable String name, @PathVariable long painterID,@PathVariable String creationDate, @PathVariable String currentLocation, @PathVariable String technique, @PathVariable String description, @PathVariable String artPeriod, @PathVariable String iconPath )
+    {
+
+        artRepository.save(new Art(name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath));
+        return "ADDED";
+    }
+
+
+    @PostMapping (path = "/art/add/{name}/{painterID}/{creationDate}/{currentLocation}/{technique}/{description}/{artPeriod}/{iconPath}")
+    public String updateArt(@PathVariable String name, @PathVariable long painterID,@PathVariable String creationDate, @PathVariable String currentLocation, @PathVariable String technique, @PathVariable String description, @PathVariable String artPeriod, @PathVariable String iconPath )
+    {
+
+        artRepository.save(new Art(name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath));
+        return "ADDED";
+    }
 
 
 }

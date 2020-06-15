@@ -9,6 +9,7 @@ public class Art {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
     private long painterId;
@@ -21,8 +22,9 @@ public class Art {
 
     public Art() {
     }
-    public Art(long id,String name,long painterId,String creationDate, String currentLocation,String technique,String description,String artPeriod,String iconPath) {
-        this.id = id;
+    public Art(String name,long painterId,String creationDate, String currentLocation,String technique,String description,String artPeriod,String iconPath) {
+
+        this.name = name;
         this.painterId = painterId;
         this.creationDate = creationDate;
         this.currentLocation = currentLocation;

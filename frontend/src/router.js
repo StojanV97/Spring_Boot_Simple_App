@@ -6,15 +6,15 @@ import Bootstrap from '@/components/Bootstrap'
 import User from '@/components/User'
 import Login from '@/components/Login'
 import Protected from '@/components/Protected'
-
+import Test from '@/components/Test'
 import store from './store'
-import MainWindow from "./components/MainWindow";
 import AddPainter from "./components/AddPainter";
 import PreviewPainter from "./components/PreviewPainter";
 import EditPainter from "./components/EditPainter";
 import AddArt from "./components/AddArt";
 import PreviewArt from "./components/PreviewArt";
 import EditArt from "./components/EditArt";
+import TableView from "./components/TableView"
 
 Vue.use(Router);
 
@@ -27,11 +27,12 @@ const router = new Router({
         { path: '/addart', component: AddArt },
         { path: '/edit', component: EditPainter },
         { path: '/editart', component: EditArt },
-        { path: '/main', component: MainWindow },
         { path: '/callservice', component: Service },
         { path: '/bootstrap', component: Bootstrap },
         { path: '/user', component: User },
         { path: '/login', component: Login },
+        { path: '/home-page', component: Test },
+        { path: '/table-view', component: TableView },
         {
             path: '/protected',
             component: Protected,

@@ -7,16 +7,19 @@
             <span class="highlight">Art</span> Museum
           </h1>
         </div>
-        <nav>
+        <nav id="lu">
           <ul>
-            <li class="current">
-              <a>Table View</a>
+            <li>
+              <v-btn class="btnbtnbtn" @click="$router.push('/home-page')">Home Page</v-btn>
             </li>
             <li>
-              <a>Tutorial</a>
+              <v-btn class="btnbtnbtn" @click="$router.push('/table-view')">Table View</v-btn>
             </li>
             <li>
-              <a>Help</a>
+              <v-btn class="btnbtnbtn">Tutorial</v-btn>
+            </li>
+            <li>
+              <v-btn color="black" class="btnbtnbtn">Help</v-btn>
             </li>
           </ul>
         </nav>
@@ -58,6 +61,13 @@
 
 
 <style  scoped>
+#lu {
+  margin-top: -5px;
+}
+.btnbtnbtn {
+  color: #35424a;
+  background-color: #35424a;
+}
 #duzme {
   margin-left: 10%;
   width: 100%;
@@ -71,8 +81,8 @@
   background-color: #baffbb;
 }
 footer {
-  margin-top: 5%;
-  padding: 30px;
+  margin-top: 0%;
+  padding: 20px;
   height: 70px;
   color: #ffffff;
   background-color: #35424a;
@@ -82,12 +92,12 @@ footer {
   margin-left: 8%;
 }
 .box {
-  margin-left: 2%;
+  margin-left: 1%;
   margin-right: 20px;
   width: 30%;
 }
 #div-flex {
-  height: 75vh;
+  height: 80vh;
   padding-right: 0%;
   padding-top: 60px;
   margin-left: 0;
@@ -139,6 +149,7 @@ header li {
 }
 
 header #branding {
+  margin-top: -15px;
   float: left;
 }
 

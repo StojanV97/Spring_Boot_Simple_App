@@ -8,13 +8,26 @@ import Login from '@/components/Login'
 import Protected from '@/components/Protected'
 
 import store from './store'
+import MainWindow from "./components/MainWindow";
+import AddPainter from "./components/AddPainter";
+import PreviewPainter from "./components/PreviewPainter";
+import EditPainter from "./components/EditPainter";
+import AddArt from "./components/AddArt";
+import PreviewArt from "./components/PreviewArt";
+import EditArt from "./components/EditArt";
 
 Vue.use(Router);
 
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
-        { path: '/', component: Hello },
+        { path: '/', component: AddPainter },
+        { path: '/preview', component: PreviewPainter },
+        { path: '/previewart', component: PreviewArt },
+        { path: '/addart', component: AddArt },
+        { path: '/edit', component: EditPainter },
+        { path: '/editart', component: EditArt },
+        { path: '/main', component: MainWindow },
         { path: '/callservice', component: Service },
         { path: '/bootstrap', component: Bootstrap },
         { path: '/user', component: User },

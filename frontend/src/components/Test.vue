@@ -33,9 +33,8 @@
             @editPainterEvent="editPainter($event)"
             @deleteEvent="updatePainters"
             @painterEvent="openPaintings($event)"
-            v-bind:painters="painters"
+            v-bind:painter="painters"
           />
-
           <div class="my-2">
             <v-btn
               x-large
@@ -60,7 +59,12 @@
           </div>
         </div>
         <div class="box" id="box-art">
-          <Art v-bind:painterArt="painterr" />
+          <Art
+            @deleteSlikaEvent="deleteSlika($event)"
+            @detailsSlikaEvent="detailsSlika($event)"
+            @eeee="editSlika($event)"
+            v-bind:painterArt="painterr"
+          />
           <div class="my-2">
             <v-btn
               x-large
@@ -68,6 +72,7 @@
               dark
               class="duzme"
               :disabled="addArtDisabled == false"
+              @click="addArtFunction"
             >Add Art</v-btn>
           </div>
         </div>
@@ -90,9 +95,9 @@
     </v-dialog>
     <v-dialog v-model="editPainterDialog" width="1200">
       <v-card>
-        <v-card-title class="grey darken-2">User</v-card-title>
+        <v-card-title class="grey darken-2">Edit Painter</v-card-title>
         <v-container>
-          <EditPainter />
+          <EditPainter v-bind:painter="pejnter2" />
         </v-container>
         <v-card-actions>
           <v-spacer />
@@ -112,6 +117,42 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="showDetailsSlika" width="800">
+      <v-card>
+        <v-card-title class="grey darken-2">Art</v-card-title>
+        <v-container>
+          <PreviewArt v-bind:art="art" />
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text color="primary" @click="showDetailsSlika = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="editSlikaDialog" width="800">
+      <v-card>
+        <v-card-title class="grey darken-2">Art</v-card-title>
+        <v-container>
+          <EditArt v-bind:art="art" />
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text color="primary" @click="editSlikaDialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="addArtDialog" width="800">
+      <v-card>
+        <v-card-title class="grey darken-2">Add Art</v-card-title>
+        <v-container>
+          <AddArt />
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text color="primary" @click="addArtDialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -124,6 +165,9 @@ import api from "../components/backend-api";
 import AddPainter from "../components/AddPainter";
 import EditPainter from "../components/EditPainter";
 import PreviewPainter from "../components/PreviewPainter";
+import PreviewArt from "../components/PreviewArt";
+import EditArt from "../components/EditArt";
+import AddArt from "../components/AddArt";
 
 export default {
   components: {
@@ -131,9 +175,16 @@ export default {
     Art,
     AddPainter,
     EditPainter,
-    PreviewPainter
+    PreviewPainter,
+    PreviewArt,
+    EditArt,
+    AddArt
   },
   data: () => ({
+    addArtDialog: false,
+    showDetailsSlika: false,
+    art: "",
+    editSlikaDialog: false,
     previewUser: false,
     editPainterDialog: false,
     addArtDisabled: false,
@@ -154,7 +205,8 @@ export default {
     painters: [],
     painterr: "",
     showAddPainter: false,
-    pejnter: ""
+    pejnter: "",
+    pejnter2: ""
   }),
 
   mounted() {
@@ -202,16 +254,39 @@ export default {
       this.showAddPainter = true;
     },
     editPainter(event) {
-      api
-        .editPainter(event.id)
-        .then(response => {
-          this.painters = response.data;
-        })
-        .cath(e => {});
+      this.pejnter2 = event;
+      this.editPainterDialog = true;
+
+      console.log(this.pejnter2);
+      //   api
+      //     .editPainter(event.id)
+      //     .then(response => {
+      //       this.painters = response.data;
+      //     })
+      //     .cath(e => {});
     },
     previewPainter(event) {
       this.previewUser = true;
       this.pejnter = event;
+    },
+    editSlika(event) {
+      console.log("EVENT");
+      this.editSlikaDialog = true;
+      this.art = event;
+    },
+    detailsSlika(event) {
+      this.showDetailsSlika = true;
+      console.log(event);
+      this.art = event;
+    },
+    deleteSlika(event) {
+      api
+        .deleteArt(event.id)
+        .then(response => {})
+        .catch(e => {});
+    },
+    addArtFunction() {
+      this.addArtDialog = true;
     }
   }
 };

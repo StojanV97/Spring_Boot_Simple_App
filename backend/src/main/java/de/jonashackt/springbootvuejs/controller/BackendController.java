@@ -1,11 +1,10 @@
 package de.jonashackt.springbootvuejs.controller;
 
-import de.jonashackt.springbootvuejs.domain.Art;
+import de.jonashackt.springbootvuejs.domain.*;
 import de.jonashackt.springbootvuejs.domain.Painter;
-import de.jonashackt.springbootvuejs.domain.Painter;
-import de.jonashackt.springbootvuejs.domain.User;
 import de.jonashackt.springbootvuejs.exception.UserNotFoundException;
 import de.jonashackt.springbootvuejs.repository.ArtRepository;
+import de.jonashackt.springbootvuejs.repository.PainterArtReposiroty;
 import de.jonashackt.springbootvuejs.repository.PainterRepository;
 import de.jonashackt.springbootvuejs.repository.UserRepository;
 import org.hibernate.annotations.GeneratorType;
@@ -39,6 +38,8 @@ public class BackendController {
     private ArtRepository artRepository;
     @Autowired
     private PainterRepository painterRepository;
+    @Autowired
+    PainterArtReposiroty painterArtReposiroty;
 
     @RequestMapping(path = "/hello")
     public String sayHello() {
@@ -130,22 +131,75 @@ public class BackendController {
     @PostMapping (path="/art/delete/{id}")
     public String deleteArt(@PathVariable long id){
 
-        Optional<Art> art = artRepository.findById(id);
-        Art a= new Art();
-        if(art.isPresent())
-        {
-            a = art.get();
-        }
-        artRepository.delete(a);
+        painterArtReposiroty.deleteById(id);
+        artRepository.deleteById(id);
+   //     Optional<Art> art = artRepository.findById(id);
+   //     Art a= new Art();
+   //     if(art.isPresent())
+   //     {
+   //         a = art.get();
+   //     }
+   //     artRepository.delete(a);
 
         return "DELETED";
+    }
+
+    @PostMapping (path = "/art/add")
+    public String add(@RequestBody Art art)
+    {
+        System.out.println("SASDASDASDASDAS");
+        Random r = new Random();
+        Collection<Art> pa = (Collection<Art>) artRepository.findAll();
+        boolean flag = false;
+        long id = 999999l;
+        while(!flag){
+            boolean flag2 = false;
+            id = r.nextInt(1000);
+            for(Art painter : pa){
+                if(painter.getId() == id){
+                    flag2 = true;
+                    break;
+                }
+            }
+            if(!flag2){
+                flag = true;
+            }
+        }
+        art.setId(id);
+        System.out.println(art);
+        artRepository.save(art);
+
+        return "ADDED";
     }
 
     @PostMapping (path = "/art/add/{name}/{painterID}/{creationDate}/{currentLocation}/{technique}/{description}/{artPeriod}/{iconPath}")
     public String addPainting(@PathVariable String name, @PathVariable long painterID,@PathVariable String creationDate, @PathVariable String currentLocation, @PathVariable String technique, @PathVariable String description, @PathVariable String artPeriod, @PathVariable String iconPath )
     {
 
-        artRepository.save(new Art(name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath));
+        System.out.println("SASDASDASDASDAS");
+        Random r = new Random();
+        Collection<Art> pa = (Collection<Art>) artRepository.findAll();
+        boolean flag = false;
+        long id = 999999l;
+        while(!flag){
+            boolean flag2 = false;
+            id = r.nextInt(1000);
+            for(Art painter : pa){
+                if(painter.getId() == id){
+                    flag2 = true;
+                    break;
+                }
+            }
+            if(!flag2){
+                flag = true;
+            }
+        }
+        Art art =new Art(id,name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath);
+        System.out.println(art);
+        artRepository.save(art);
+        PAINTER_ART paas = new PAINTER_ART(painterID,id);
+        painterArtReposiroty.save(paas);
+
         return "ADDED";
     }
 

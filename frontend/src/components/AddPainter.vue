@@ -93,6 +93,12 @@
         </v-col>
       </v-row>
     </v-form>
+    <v-snackbar v-model="snackbar">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -107,6 +113,8 @@ export default {
         "Avatar size should be less than 2 MB!"
     ],
     valid: false,
+    snackbar: false,
+    text: "",
     artist: {
       firstname: "",
       lastname: "",
@@ -170,6 +178,8 @@ export default {
           "this.artist.iconPath"
         )
         .then(response => {
+          this.text = "Painter added!";
+          this.snackbar = true;
           console.log(this.artist);
           console.log(response.data);
         });

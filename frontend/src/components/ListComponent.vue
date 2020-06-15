@@ -11,7 +11,7 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-    <v-data-table :headers="headers" :items="$props.painters" :search="search" height="190px">
+    <v-data-table :headers="headers" :items="$props.painter" :search="search" height="190px">
       <template v-slot:item.avatar="{ item }">
         <v-img draggable height="30px" width="30px" src="../assets/Salvador-Dali-828x1024.jpg" />
       </template>
@@ -41,7 +41,7 @@
 import api from "../components/backend-api";
 
 export default {
-  props: ["painters"],
+  props: ["painter"],
   data: () => ({
     search: "",
     headers: [
@@ -82,6 +82,7 @@ export default {
     },
     show(item) {
       this.$emit("painterEvent", item);
+      localStorage.setItem("artistId", item.painterId);
     },
     deleteItem(item) {
       api.deletePainter(item.id).then(response => {
@@ -89,6 +90,7 @@ export default {
       });
     },
     edit(item) {
+      console.log(item);
       this.$emit("editPainterEvent", item);
     },
     preview(item) {

@@ -29,7 +29,7 @@
         <v-icon medium @click="details(item)">mdi-tooltip-image</v-icon>
       </template>
       <template v-slot:item.actionEdit="{ item }">
-        <v-icon medium @click="deleteItem(item)">mdi-pencil</v-icon>
+        <v-icon medium @click="edit(item)">mdi-pencil</v-icon>
       </template>
     </v-data-table>
   </v-card>
@@ -52,6 +52,22 @@ export default {
       { text: "Details", value: "details" },
       { text: "Delete", value: "delete" }
     ]
-  })
+  }),
+  methods: {
+    edit(item) {
+      this.$emit("eeee", item);
+    },
+    details(item) {
+      this.$emit("detailsSlikaEvent", item);
+    },
+    deleteItem(item) {
+      //console.log(item);
+      this.$emit("deleteSlikaEvent", item);
+      const index = this.$props.painterArt.arts.indexOf(item);
+      if (index != -1) {
+        this.$props.painterArt.arts.splice(index, 1);
+      }
+    }
+  }
 };
 </script>

@@ -33,6 +33,7 @@ const router = new Router({
         { path: '/login', component: Login },
         { path: '/home-page', component: Test },
         { path: '/table-view', component: TableView },
+        { path: '/e', component: EditPainter },
         {
             path: '/protected',
             component: Protected,

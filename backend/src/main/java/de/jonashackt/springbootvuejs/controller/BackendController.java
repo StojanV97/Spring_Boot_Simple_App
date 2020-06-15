@@ -128,12 +128,25 @@ public class BackendController {
     }
 
 
-    @PostMapping (path = "/art/add/{name}/{painterID}/{creationDate}/{currentLocation}/{technique}/{description}/{artPeriod}/{iconPath}")
-    public String updateArt(@PathVariable String name, @PathVariable long painterID,@PathVariable String creationDate, @PathVariable String currentLocation, @PathVariable String technique, @PathVariable String description, @PathVariable String artPeriod, @PathVariable String iconPath )
+    @PostMapping (path = "/paiting/update/{name}/{painterID}/{creationDate}/{currentLocation}/{technique}/{description}/{artPeriod}/{iconPath}/{artID}")
+    public String updatePainting(@PathVariable String name, @PathVariable long painterID,@PathVariable String creationDate, @PathVariable String currentLocation, @PathVariable String technique, @PathVariable String description, @PathVariable String artPeriod, @PathVariable String iconPath, @PathVariable long artID )
     {
-
-        artRepository.save(new Art(name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath));
-        return "ADDED";
+        Art art = new Art();
+        Optional<Art> a = artRepository.findById(artID);
+        if(a.isPresent())
+        {
+            art = a.get();
+        }
+        art.setArtPeriod(artPeriod);
+        art.setCreationDate(creationDate);
+        art.setCurrentLocation(currentLocation);
+        art.setIconPath(iconPath);
+        art.setDescription(description);
+        art.setName(name);
+        art.setPainterId(painterID);
+        art.setTechnique(technique);
+        artRepository.save(art);
+        return "UPDATED";
     }
 
 

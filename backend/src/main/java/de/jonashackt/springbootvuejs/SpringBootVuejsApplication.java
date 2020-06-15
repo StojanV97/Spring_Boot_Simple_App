@@ -27,6 +27,7 @@ public class SpringBootVuejsApplication {
 			//Painter p = new Painter(2,"asda","adsd","dasd","adsdas","asda","asdas");
 
 			Painter p = new Painter(1, "ime","prezime","2002-12-12","2003-13-12","srbin","Kubizam","asdas");
+			p.setIconPath("C:\\Users\\Stoja\\Desktop\\Salvador-Dali-828x1024.jpg");
 			Art a = new Art(1,"ada",1,"asda","asda","adda","asda","asdad","asda");
 			Art a1 = new Art(2,"ada",1,"asda","asda","adda","asda","asdad","asda");
 			Art a2 = new Art(3,"ada",1,"asda","asda","adda","asda","asdad","asda");
@@ -38,8 +39,6 @@ public class SpringBootVuejsApplication {
 			PAINTER_ART pa1 = new PAINTER_ART(1,3);
 			painterArtReposiroty.save(pa);
 			painterArtReposiroty.save(pa1);
-
-
 		};
 	}
 }

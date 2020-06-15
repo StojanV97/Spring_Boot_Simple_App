@@ -1,66 +1,230 @@
 <template>
-  <div id="main-div">
-    <header>
-      <div class="container">
-        <div id="branding">
-          <h1>
-            <span class="highlight">Art</span> Museum
-          </h1>
+  <v-app id="main-div">
+    <div>
+      <header>
+        <div class="container">
+          <div id="branding">
+            <h1>
+              <span class="highlight">Art</span> Museum
+            </h1>
+          </div>
+          <nav id="lu">
+            <ul>
+              <li>
+                <v-btn class="btnbtnbtn" @click="$router.push('/home-page')">Home Page</v-btn>
+              </li>
+              <li>
+                <v-btn class="btnbtnbtn" @click="$router.push('/table-view')">Table View</v-btn>
+              </li>
+              <li>
+                <v-btn class="btnbtnbtn">Tutorial</v-btn>
+              </li>
+              <li>
+                <v-btn class="btnbtnbtn">Help</v-btn>
+              </li>
+            </ul>
+          </nav>
         </div>
-        <nav id="lu">
-          <ul>
-            <li>
-              <v-btn class="btnbtnbtn" @click="$router.push('/home-page')">Home Page</v-btn>
-            </li>
-            <li>
-              <v-btn class="btnbtnbtn" @click="$router.push('/table-view')">Table View</v-btn>
-            </li>
-            <li>
-              <v-btn class="btnbtnbtn">Tutorial</v-btn>
-            </li>
-            <li>
-              <v-btn color="black" class="btnbtnbtn">Help</v-btn>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div id="div-flex">
-      <div class="box">
-        <ListComponent />
+      </header>
+      <div id="div-flex">
+        <div class="box">
+          <ListComponent
+            @previewPainter="previewPainter($event)"
+            @editPainterEvent="editPainter($event)"
+            @deleteEvent="updatePainters"
+            @painterEvent="openPaintings($event)"
+            v-bind:painters="painters"
+          />
 
-        <div class="my-2">
-          <v-btn x-large color="warning" dark class="duzme">Add Painter</v-btn>
+          <div class="my-2">
+            <v-btn
+              x-large
+              color="warning"
+              dark
+              class="duzme"
+              @click="addPainterFunction"
+            >Add Painter</v-btn>
+          </div>
         </div>
-      </div>
-      <div class="box">
-        <v-img
-          src="./../assets/world.jpg"
-          :aspect-ratio="16/9"
-          height="74%"
-          width="120%"
-          max-width="630"
-        ></v-img>
+        <div class="box">
+          <v-img
+            src="./../assets/world.jpg"
+            :aspect-ratio="16/9"
+            height="74%"
+            width="120%"
+            max-width="630"
+          ></v-img>
 
-        <div class="my-2">
-          <v-btn x-large color="error" dark id="duzme">Clear Map</v-btn>
+          <div class="my-2">
+            <v-btn x-large color="error" dark id="duzme">Clear Map</v-btn>
+          </div>
+        </div>
+        <div class="box" id="box-art">
+          <Art v-bind:painterArt="painterr" />
+          <div class="my-2">
+            <v-btn
+              x-large
+              color="warning"
+              dark
+              class="duzme"
+              :disabled="addArtDisabled == false"
+            >Add Art</v-btn>
+          </div>
         </div>
       </div>
-      <div class="box" id="box-art">
-        <Art />
-        <div class="my-2">
-          <v-btn x-large color="warning" dark class="duzme">Add Art</v-btn>
-        </div>
-      </div>
+      <footer>
+        <p>Painter and their arts, Copyright Mihanine &copy; 2020</p>
+      </footer>
     </div>
-    <footer>
-      <p>Painter and their arts, Copyright Mihanine &copy; 2020</p>
-    </footer>
-  </div>
+    <v-dialog v-model="showAddPainter" width="1200">
+      <v-card>
+        <v-card-title class="grey darken-2">User</v-card-title>
+        <v-container>
+          <AddPainter />
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text color="primary" @click="showAddPainter = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="editPainterDialog" width="1200">
+      <v-card>
+        <v-card-title class="grey darken-2">User</v-card-title>
+        <v-container>
+          <EditPainter />
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text color="primary" @click="editPainterDialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="previewUser" width="400">
+      <v-card>
+        <v-card-title class="grey darken-2">User</v-card-title>
+        <v-container id="container">
+          <PreviewPainter v-bind:painter="pejnter" />
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text color="primary" @click="previewUser = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-app>
 </template>
 
 
+
+<script>
+import ListComponent from "../components/ListComponent";
+import Art from "../components/Art";
+import api from "../components/backend-api";
+import AddPainter from "../components/AddPainter";
+import EditPainter from "../components/EditPainter";
+import PreviewPainter from "../components/PreviewPainter";
+
+export default {
+  components: {
+    ListComponent,
+    Art,
+    AddPainter,
+    EditPainter,
+    PreviewPainter
+  },
+  data: () => ({
+    previewUser: false,
+    editPainterDialog: false,
+    addArtDisabled: false,
+    valid: true,
+    name: "",
+    nameRules: [
+      v => !!v || "Name is required",
+      v => (v && v.length <= 10) || "Name must be less than 10 characters"
+    ],
+    email: "",
+    emailRules: [
+      v => !!v || "E-mail is required",
+      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+    ],
+    select: null,
+    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
+    checkbox: false,
+    painters: [],
+    painterr: "",
+    showAddPainter: false,
+    pejnter: ""
+  }),
+
+  mounted() {
+    console.log("Mounted");
+    api
+      .getAllPainters()
+      .then(response => {
+        console.log(response.data);
+        this.painters = response.data;
+        console.log("asdasdsds");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  },
+  methods: {
+    validate() {
+      this.$refs.form.validate();
+    },
+    reset() {
+      this.$refs.form.reset();
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    openPaintings(event) {
+      this.addArtDisabled = true;
+      console.log(event);
+      this.painterr = event;
+    },
+    updatePainters() {
+      api
+        .getAllPainters()
+        .then(response => {
+          console.log(response.data);
+          this.painters = response.data;
+          this.painterr = [];
+          this.addArtDisabled = false;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    addPainterFunction() {
+      this.showAddPainter = true;
+    },
+    editPainter(event) {
+      api
+        .editPainter(event.id)
+        .then(response => {
+          this.painters = response.data;
+        })
+        .cath(e => {});
+    },
+    previewPainter(event) {
+      this.previewUser = true;
+      this.pejnter = event;
+    }
+  }
+};
+</script>
+
+
 <style  scoped>
+.duzme:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: black;
+  color: black;
+}
 #lu {
   margin-top: -5px;
 }
@@ -196,43 +360,3 @@ header a:hover {
   /* insert styles here */
 }
 </style>
-
-<script>
-import ListComponent from "../components/ListComponent";
-import Art from "../components/Art";
-export default {
-  components: {
-    ListComponent,
-    Art
-  },
-  data: () => ({
-    valid: true,
-    name: "",
-    nameRules: [
-      v => !!v || "Name is required",
-      v => (v && v.length <= 10) || "Name must be less than 10 characters"
-    ],
-    email: "",
-    emailRules: [
-      v => !!v || "E-mail is required",
-      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-    ],
-    select: null,
-    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-    checkbox: false
-  }),
-
-  methods: {
-    validate() {
-      this.$refs.form.validate();
-    },
-    reset() {
-      this.$refs.form.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    }
-  }
-};
-</script>
-

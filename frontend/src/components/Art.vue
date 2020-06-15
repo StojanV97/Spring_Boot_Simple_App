@@ -11,7 +11,12 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-    <v-data-table :headers="headers" :items="items" :search="search" height="190px">
+    <v-data-table
+      :headers="headers"
+      :items="$props.painterArt.arts"
+      :search="search"
+      height="190px"
+    >
       <template v-slot:item.avatar="{ item }">
         <v-avatar>
           <v-img :src="item.avatar"></v-img>
@@ -19,6 +24,9 @@
       </template>
       <template v-slot:item.delete="{ item }">
         <v-icon medium @click="deleteItem(item)">mdi-delete</v-icon>
+      </template>
+      <template v-slot:item.details="{ item }">
+        <v-icon medium @click="details(item)">mdi-tooltip-image</v-icon>
       </template>
       <template v-slot:item.actionEdit="{ item }">
         <v-icon medium @click="deleteItem(item)">mdi-pencil</v-icon>
@@ -35,39 +43,14 @@
 </style>
 <script>
 export default {
-  props: ["painter"],
+  props: ["painterArt"],
   data: () => ({
     search: "",
     headers: [
       { text: "Name", value: "name" },
       { text: "Edit", value: "actionEdit" },
+      { text: "Details", value: "details" },
       { text: "Delete", value: "delete" }
-    ],
-    items: [
-      {
-        active: true,
-        title: "Jason Oner",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-      },
-      {
-        active: true,
-        title: "Ranee Carlson",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      },
-      {
-        title: "Cindy Baker",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        title: "Ali Connors",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
-      }
-    ],
-    items2: [
-      {
-        title: "Travis Howard",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg"
-      }
     ]
   })
 };

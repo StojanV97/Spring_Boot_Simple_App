@@ -15,13 +15,14 @@ import AddArt from "./components/AddArt";
 import PreviewArt from "./components/PreviewArt";
 import EditArt from "./components/EditArt";
 import TableView from "./components/TableView"
+import Tutorial from "./components/Tutorial"
 
 Vue.use(Router);
 
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
-        { path: '/', component: AddPainter },
+        { path: '/', component: Test },
         { path: '/preview', component: PreviewPainter },
         { path: '/previewart', component: PreviewArt },
         { path: '/addart', component: AddArt },
@@ -34,6 +35,7 @@ const router = new Router({
         { path: '/home-page', component: Test },
         { path: '/table-view', component: TableView },
         { path: '/e', component: EditPainter },
+        { path: '/tutorial', component: Tutorial },
         {
             path: '/protected',
             component: Protected,

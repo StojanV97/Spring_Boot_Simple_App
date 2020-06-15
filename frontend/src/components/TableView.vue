@@ -17,10 +17,7 @@
                 <v-btn class="btnbtnbtn" @click="$router.push('/table-view')">Table View</v-btn>
               </li>
               <li>
-                <v-btn class="btnbtnbtn">Tutorial</v-btn>
-              </li>
-              <li>
-                <v-btn class="btnbtnbtn">Help</v-btn>
+                <v-btn class="btnbtnbtn" @click="$router.push('/tutorial')">Tutorial</v-btn>
               </li>
             </ul>
           </nav>
@@ -76,7 +73,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
   </v-app>
 </template>
 

@@ -2,23 +2,29 @@
     <v-app>
         <v-form v-model="valid">
             <v-container>
-                <v-row>
+                <v-row class="d-flex">
                     <v-col
                             cols="12"
                             md="6"
                     >
                         <v-text-field
                                 outlined
-                                v-model="this.art.name"
+                                v-model="art.name"
                                 :rules="nameRules"
                                 label="Art name"
                                 required
                         ></v-text-field>
+                        <v-text-field
+                                outlined
+                                v-model="art.currentLocation"
+                                label="Current Location"
+                                required
+                        ></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" sm="6" md="6">
+                    <v-col cols="12" md="6">
                         <v-menu
-                                disabled
+
                                 ref="menu"
                                 v-model="menu"
                                 :close-on-content-click="false"
@@ -47,27 +53,28 @@
 
                     <v-col class="d-flex" cols="12" sm="6">
                         <v-select
+
+                                class="select"
                                 required
-                                v-model="this.art.artPeriod"
+                                v-model="art.artPeriod"
                                 :items="artPeriods"
                                 label="Art period "
                                 outlined
                         ></v-select>
                     </v-col>
                     <v-col
-
-                            tile
+                            align="center"
                             cols="12"
                             md="6"
                     >
                         <v-img
                                 alt="Vuetify Logo"
-
-                                v-model="this.art.iconPath"
+                                class="shrink mr-2"
+                                contain
+                                v-model="art.iconPath"
                                 src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-                                max-height="80px"
-
-
+                                transition="scale-transition"
+                                width="100"
                         />
                     </v-col>
 
@@ -76,24 +83,37 @@
                             md="6"
                     >
                         <v-select
-                                readonly
-                                v-model="this.art.technique"
+                                required
+                                v-model="art.technique"
                                 :items="techniques"
-                                label="Art period "
+                                label="Techniques "
                                 outlined
                         ></v-select>
                     </v-col>
 
+                    <v-col
+                            cols="6"
+                            md="6"
+                    >
+                        <v-file-input
+                                outlined
+                                :rules="rules"
+                                accept="image/png, image/jpeg, image/bmp"
+                                placeholder="Pick an picture"
+                                prepend-icon="mdi-panorama"
+                                label="Picture"
+                        ></v-file-input>
 
+                    </v-col>
                     <v-col
                             cols="12"
                             md="12"
                     >
                         <v-textarea
                                 outlined
-                                v-model="this.art.description"
+                                v-model="art.description"
                                 label="Description"
-                                readonly
+                                required
                         ></v-textarea>
                     </v-col>
 
@@ -101,7 +121,7 @@
                             cols="12"
                             md="4"
                     >
-                        <v-btn>
+                        <v-btn @click="onSubmit">
                             Submit (NEKI SNEEKBAR)
                         </v-btn>
 
@@ -115,6 +135,8 @@
 </template>
 
 <script>
+    import api from "./backend-api";
+
     export default {
         data: () => ({
             rules: [
@@ -158,12 +180,23 @@
 
         }),
         mounted() {
+            api.getPainting(1).then(response => {
+                this.date = response.data.creationDate;
+                this.art.id = response.data.id;
+                this.art.creationDate = response.data.creationDate;
+                this.art.iconPath = response.data.iconPath;
+                this.art.technique = response.data.technique;
+                this.art.description = response.data.description;
+                this.art.artPeriod = response.data.artPeriod;
+                this.art.currentLocation = response.data.currentLocation;
+                this.art.name = response.data.name;
+                this.art.id = response.data.id;
+
+            })
         },
         methods:{
 
-            onSubmit(){
 
-            },
         }
 
     }

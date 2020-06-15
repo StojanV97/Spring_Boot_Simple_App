@@ -20,6 +20,7 @@
                         <v-menu
 
                                 ref="menu"
+                                :rules="nameRules"
                                 v-model="menu"
                                 :close-on-content-click="false"
                                 :return-value.sync="date"
@@ -48,6 +49,7 @@
                     <v-col class="d-flex" cols="12" sm="6">
                         <v-select
                                 required
+                                :rules="nameRules"
                                 v-model="this.art.artPeriod"
                                 :items="artPeriods"
                                 label="Art period "
@@ -76,9 +78,10 @@
                     >
                         <v-select
                                 required
+                                :rules="nameRules"
                                 v-model="this.art.technique"
                                 :items="techniques"
-                                label="Art period "
+                                label="Techniques "
                                 outlined
                         ></v-select>
                     </v-col>
@@ -103,18 +106,20 @@
                     >
                         <v-textarea
                                 outlined
+                                :rules="nameRules"
                                 v-model="this.art.description"
                                 label="Description"
                                 required
                         ></v-textarea>
+
                     </v-col>
 
                     <v-col
                             cols="12"
                             md="4"
                     >
-                        <v-btn>
-                            Submit (NEKI SNEEKBAR)
+                        <v-btn @click = "onSubmit">
+                            Submit
                         </v-btn>
 
                     </v-col>
@@ -127,6 +132,7 @@
 </template>
 
 <script>
+    import api from "./backend-api";
     export default {
         data: () => ({
             rules: [
@@ -146,10 +152,13 @@
                 description:'',
                 artPeriod:'',
                 iconPath:'',
+                painterID:'',
+                currentLocation:'',
+
             },
 
             nameRules: [
-                v => !!v || 'Artist Name is required',
+                v => !!v || 'Item is required',
             ],
             email: '',
             dateOfbirthrules: [
@@ -162,7 +171,7 @@
 
             artPeriods:["Klasicizam", "Postimpresionizam", "Impresionizam", "Kubizam", "Romantizam", "Gotika", "Barok", "Moderna Umestnost", "Renesansa" , "Humanizam"],
             techniques:['pastel', 'kolaž', 'vitraž', 'tapiserija', 'grafit', 'ugljen', 'ulje', 'akril', 'akvarel', 'gvaš', 'tempera', 'mozaik' ,'enkaustika'],
-            date: new Date().toISOString().substr(0, 10),
+            date: '',
             date2: "",
             menu: false,
             menu2:false,
@@ -174,9 +183,14 @@
         methods:{
 
             onSubmit(){
+                this.$refs.form.validate()
+                this.art.creationDate =this.date;
 
+
+                api.addPainting(this.art.name,this.art.painterID,this.art.creationDate,this.art.currentLocation,this.art.technique,this.art.description,this.art.artPeriod,this.art.iconPath)
             },
-        }
+        },
+
 
     }
 </script>

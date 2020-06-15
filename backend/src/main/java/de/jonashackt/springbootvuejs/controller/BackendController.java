@@ -91,6 +91,28 @@ public class BackendController {
         return "ADDED";
     }
 
+    @PostMapping (path = "/painter/edit/{id}/{firstName}/{lastName}/{dateOfBirth}/{dateOfDeath}/{nationality}/{artPeriod}/{iconPath}")
+    public String editPainter(@PathVariable long id ,@PathVariable String firstName, @PathVariable String lastName, @PathVariable String dateOfBirth, @PathVariable String dateOfDeath, @PathVariable String nationality, @PathVariable String artPeriod, @PathVariable String iconPath )
+    {
+        Optional<Painter> p = painterRepository.findById(id);
+        Painter painter = new Painter();
+        if(p.isPresent())
+        {
+            painter = p.get();
+
+        }
+
+        painter.setArtPeriod(artPeriod);
+        painter.setFirstName(firstName);
+        painter.setDateOfBirth(dateOfBirth);
+        painter.setDateOfDeath(dateOfDeath);
+        painter.setLastName(lastName);
+        painter.setNationality(nationality);
+
+
+        painterRepository.save(painter);
+        return "UPDATED";
+    }
     @PostMapping (path="/painter/delete/{id}")
     public String deletePainter(@PathVariable long id){
 
@@ -128,13 +150,39 @@ public class BackendController {
     }
 
 
-    @PostMapping (path = "/art/add/{name}/{painterID}/{creationDate}/{currentLocation}/{technique}/{description}/{artPeriod}/{iconPath}")
-    public String updateArt(@PathVariable String name, @PathVariable long painterID,@PathVariable String creationDate, @PathVariable String currentLocation, @PathVariable String technique, @PathVariable String description, @PathVariable String artPeriod, @PathVariable String iconPath )
-    {
 
-        artRepository.save(new Art(name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath));
-        return "ADDED";
+    @PostMapping (path = "/painting/update/{name}/{painterID}/{creationDate}/{currentLocation}/{technique}/{description}/{artPeriod}/{iconPath}/{artID}")
+    public String updatePainting(@PathVariable String name, @PathVariable long painterID,@PathVariable String creationDate, @PathVariable String currentLocation, @PathVariable String technique, @PathVariable String description, @PathVariable String artPeriod, @PathVariable String iconPath, @PathVariable long artID )
+    {
+        Art art = new Art();
+        Optional<Art> a = artRepository.findById(artID);
+        if(a.isPresent())
+        {
+            art = a.get();
+        }
+        art.setArtPeriod(artPeriod);
+        art.setCreationDate(creationDate);
+        art.setCurrentLocation(currentLocation);
+        art.setIconPath(iconPath);
+        art.setDescription(description);
+        art.setName(name);
+        art.setPainterId(painterID);
+        art.setTechnique(technique);
+        artRepository.save(art);
+        return "UPDATED";
     }
 
+
+    @GetMapping(value = "/get-paintning/{id}")
+    public ResponseEntity<?> getPainting(@PathVariable long id){
+        Optional<Art> a =  artRepository.findById(id);
+        Art art = new Art();
+        if(a.isPresent()){
+            art = a.get();
+        }
+
+        return new ResponseEntity<Art>(art,HttpStatus.OK );
+
+    }
 
 }

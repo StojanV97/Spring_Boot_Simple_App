@@ -27,9 +27,9 @@ public class SpringBootVuejsApplication {
 			//Painter p = new Painter(2,"asda","adsd","dasd","adsdas","asda","asdas");
 
 			Painter p = new Painter(1, "ime","prezime","2002-12-12","2003-13-12","srbin","Kubizam","asdas");
-			Art a = new Art(1,"ada",1,"asda","asda","adda","asda","asdad","asda");
-			Art a1 = new Art(2,"ada",1,"asda","asda","adda","asda","asdad","asda");
-			Art a2 = new Art(3,"ada",1,"asda","asda","adda","asda","asdad","asda");
+			Art a = new Art(1,"ada",1,"1999-10-10","Novisad","tapiserija","asda","Kubizam","asda");
+			Art a1 = new Art(2,"ada",1,"1909-10-10","Novisad","tapiserija","asda","Kubizam","asda");
+			Art a2 = new Art(3,"ada",1,"1909-10-10","Novisad","tapiserija","asda","Kubizam","asda");
 			painterRepository.save(p);
 			artRepository.save(a);
 			artRepository.save(a1);

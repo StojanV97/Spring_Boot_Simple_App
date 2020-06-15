@@ -40,12 +40,21 @@ export default {
     getPainter(id) {
         return AXIOS.get("/get-painter/" + id)
     },
-    addPainting(){
-        return AXIOS.post('/painting/add/' +'name'+ "/"+'painterID'+ "/"+'creationDate'+ "/"+'currentLocation'+ "/"+'technique'+ "/"+'description'+ "/"+'artPeriod'+ "/"+'iconPath')
+    addPainting(name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath){
+        return AXIOS.post('/painting/add/' +name+ "/"+ painterID+ "/"+creationDate+ "/"+currentLocation+ "/"+technique+ "/"+description+ "/"+'artPeriod'+ "/"+iconPath);
+    },
+    updatePainting(name,painterID,creationDate,currentLocation,technique,description,artPeriod,iconPath,artID){
+        return AXIOS.post('/painting/update/' +name+ "/"+painterID+ "/"+creationDate+ "/"+currentLocation+ "/"+technique+ "/"+description+ "/"+artPeriod+ "/"+iconPath+ "/"+artID);
     }
 ,
     deleteArt(artID) {
         return AXIOS.post("/art/delete/"+artID);
+    },
+
+    getPainting(paintingID)
+    {
+        return AXIOS.get("/get-paintning/"+paintingID);
+
     }
 }
 

@@ -27,13 +27,14 @@ public class Painter {
     public Painter() {
     }
 
-    public Painter(long id,String firstName,String lastName,String dateOfBirth,String dateOfDeath,String nationality,String artPeriod) {
+    public Painter(long id,String firstName,String lastName,String dateOfBirth,String dateOfDeath,String nationality,String artPeriod, String iconPath) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.dateOfDeath = dateOfDeath;
         this.nationality = nationality;
         this.artPeriod = artPeriod;
+        this.iconPath = iconPath;
         this.id = id;
     }
 

@@ -89,12 +89,12 @@
                             src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
                             transition="scale-transition"
                             width="100"
-                    />
+                    />ovde ide slikica
                     <v-col
                             cols="12"
                             md="10"
                     >
-                        <v-btn>Close</v-btn>
+                        <v-btn>Close(closedialog ??)</v-btn>
                     </v-col>
                 </v-row>
             </v-container>
@@ -104,6 +104,7 @@
 </template>
 
 <script>
+    import api from "./backend-api";
     export default {
         data: () => ({
             rules: [
@@ -111,12 +112,12 @@
             ],
             valid: false,
             artist:{
+                artistID:'',
                 firstname: '',
                 lastname: '',
                 dateOfBirth:'',
                 nationality:'',
                 artPeriod:'',
-                avatarLink:'',
                 dateOfDeath:'',
                 iconPath:''
 
@@ -136,10 +137,20 @@
 
         }),
         mounted() {
+            api.getPainter(1).then(response=>{
+                this.artist.dateOfBirth = response.data.dateOfBirth;
+                this.artist.dateOfDeath = response.data.dateOfDeath;
+                this.artist.lastname = response.data.lastName;
+                this.artist.firstname = response.data.firstName;
+                this.artist.nationality = response.data.nationality;
+                this.artist.iconPath = response.data.iconPath;
+                this.artist.artPeriod = response.data.artPeriod;
+
+            })
         },
         methods:{
 
-            onSubmit(){
+            cancel(){
 
             },
         }

@@ -1,2 +1,1 @@
-# HCI_PROJEKAT2_TIM28
-
+# Spring boot and Vuejs exercise project.
